@@ -1,0 +1,36 @@
+1. Donos (Usuários)
+Método	Rota	Descrição
+POST	/donos	Criar um novo dono. Recebe nome, e-mail, telefone.
+GET	/donos/:id	Retornar dados do dono por ID.
+PUT	/donos/:id	Atualizar dados do dono (nome, e-mail, telefone).
+PUT	/donos/:id/localizacao	Atualizar cidade/localização do dono.
+
+2. Pets
+Método	Rota	Descrição
+POST	/pets	Criar um novo pet. Recebe nome, espécie, raça, data de nascimento e dono_id. Valida que o dono existe.
+GET	/pets/:id	Retornar dados do pet por ID.
+GET	/donos/:id/pets	Listar todos os pets de um determinado dono.
+
+3. Petshops
+Método	Rota	Descrição
+POST	/petshops	Cadastrar um novo petshop (nome, CNPJ, endereço…).
+GET	/petshops/:id	Buscar dados de um petshop por ID.
+GET	/petshops?cidade={cidade}	Listar petshops na cidade informada. Aplicar padronização/case-insensitive.
+4. Serviços
+
+Método	Rota	Descrição
+POST	/petshops/:petshopId/servicos	Adicionar um serviço a um petshop. Recebe nome, descrição e preço base. Valida petshopId.
+GET	/petshops/:petshopId/servicos	Listar todos os serviços disponíveis naquele petshop.
+5. Procedimentos (Histórico de atendimentos)
+
+Método	Rota	Descrição
+POST	/procedimentos	Registrar um procedimento realizado. Recebe pet_id, petshop_id, data, lista de {servico_id, preco_final}, observações e total. Valida existência e pertencimento.
+GET	/pets/:petId/procedimentos	Listar histórico de procedimentos de um pet específico (com snapshot de nome do serviço e petshop).
+
+6. Agendamentos
+Método	Rota	Descrição
+POST	/agendamentos	Criar agendamento. Recebe dono_id, pet_id, petshop_id, data_agendada, lista de {servico_id, preco_previsto}, observações. Valida regras (não passadas, serviços válidos).
+GET	/donos/:id/agendamentos	Listar todos os agendamentos de um dono (futuros e passados).
+GET	/petshops/:id/agendamentos	(Futuro) listar agenda de um petshop.
+PUT	/agendamentos/:id/status	Atualizar status do agendamento (pendente → confirmado/cancelado/concluído).
+PUT	/agendamentos/:id	(Opcional) Remarcar data ou alterar serviços de um agendamento existente.

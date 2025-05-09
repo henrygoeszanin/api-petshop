@@ -1,0 +1,69 @@
+/.env# Arquivos de configuração com informações sensíveis
+.env
+.env.*
+!.env.example
+
+# Binários Go compilados
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+__debug_bin*
+
+# Arquivos temporários e binários Go
+*.test
+*.out
+/tmp/
+/vendor/
+
+# Arquivos de cache Go
+.go-cache/
+go.work
+
+# Arquivos de IDE/Editor
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs e arquivos de banco de dados
+*.log
+*.log.*
+*.sqlite
+*.db
+
+# Específicos do PostgreSQL
+postgresql/
+postgres_petshop/
+*.dump
+*.sql
+!migrations/*.sql
+
+# Diretórios e arquivos específicos do projeto (se necessário)
+/bin/
+/build/
+/dist/
+/coverage/
+.coverage
+
+# Arquivos temporários
+*.tmp
+*.bak
+
+# Diretorios do postgres
+/postgres/
