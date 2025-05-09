@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
@@ -24,7 +23,7 @@ func NewAgendamentoRepository(db *gorm.DB) *AgendamentoRepositoryImpl {
 func (r *AgendamentoRepositoryImpl) Create(agendamento *entities.Agendamento) error {
 	result := r.db.Create(agendamento)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar agendamento: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -37,7 +36,7 @@ func (r *AgendamentoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Agendamen
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar agendamento: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &agendamento, nil
 }
@@ -50,7 +49,7 @@ func (r *AgendamentoRepositoryImpl) Update(agendamento *entities.Agendamento) er
 		if err == gorm.ErrRecordNotFound {
 			return errors.ErrNotFound
 		}
-		return fmt.Errorf("erro ao verificar existência do agendamento: %w", err)
+		return errors.ErrInvalidData
 	}
 
 	// Começar uma transação para garantir atomicidade
@@ -64,13 +63,13 @@ func (r *AgendamentoRepositoryImpl) Update(agendamento *entities.Agendamento) er
 	// Atualizar os itens do agendamento requer excluir os existentes e criar novos
 	if err := tx.Where("agendamento_id = ?", agendamento.ID).Delete(&entities.ItemAgendamento{}).Error; err != nil {
 		tx.Rollback()
-		return fmt.Errorf("erro ao excluir itens existentes: %w", err)
+		return errors.ErrInvalidData
 	}
 
 	// Salvar o agendamento atualizado
 	if err := tx.Save(agendamento).Error; err != nil {
 		tx.Rollback()
-		return fmt.Errorf("erro ao atualizar agendamento: %w", err)
+		return errors.ErrInvalidData
 	}
 
 	return tx.Commit().Error
@@ -80,7 +79,7 @@ func (r *AgendamentoRepositoryImpl) Update(agendamento *entities.Agendamento) er
 func (r *AgendamentoRepositoryImpl) UpdateStatus(id ksuid.KSUID, status entities.StatusAgendamento) error {
 	result := r.db.Model(&entities.Agendamento{}).Where("id = ?", id).Update("status", status)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao atualizar status do agendamento: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -92,7 +91,7 @@ func (r *AgendamentoRepositoryImpl) UpdateStatus(id ksuid.KSUID, status entities
 func (r *AgendamentoRepositoryImpl) Delete(id ksuid.KSUID) error {
 	result := r.db.Delete(&entities.Agendamento{}, "id = ?", id)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao excluir agendamento: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -105,7 +104,7 @@ func (r *AgendamentoRepositoryImpl) GetByDonoID(donoID ksuid.KSUID) ([]entities.
 	var agendamentos []entities.Agendamento
 	result := r.db.Preload("Itens").Where("dono_id = ?", donoID).Order("data_agendada DESC").Find(&agendamentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos do dono: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return agendamentos, nil
 }
@@ -115,7 +114,7 @@ func (r *AgendamentoRepositoryImpl) GetByPetshopID(petshopID ksuid.KSUID) ([]ent
 	var agendamentos []entities.Agendamento
 	result := r.db.Preload("Itens").Where("petshop_id = ?", petshopID).Order("data_agendada DESC").Find(&agendamentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos do petshop: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return agendamentos, nil
 }
@@ -125,7 +124,7 @@ func (r *AgendamentoRepositoryImpl) GetByPetID(petID ksuid.KSUID) ([]entities.Ag
 	var agendamentos []entities.Agendamento
 	result := r.db.Preload("Itens").Where("pet_id = ?", petID).Order("data_agendada DESC").Find(&agendamentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos do pet: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return agendamentos, nil
 }
@@ -140,7 +139,7 @@ func (r *AgendamentoRepositoryImpl) GetAgendamentosFuturos(petshopID ksuid.KSUID
 		Order("data_agendada ASC").
 		Find(&agendamentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos futuros do petshop: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return agendamentos, nil
 }

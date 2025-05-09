@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"fmt"
-
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
 	"github.com/henrygoeszanin/api_petshop/domain/errors"
 	"github.com/segmentio/ksuid"
@@ -23,7 +21,7 @@ func NewProcedimentoRepository(db *gorm.DB) *ProcedimentoRepositoryImpl {
 func (r *ProcedimentoRepositoryImpl) Create(procedimento *entities.Procedimento) error {
 	result := r.db.Create(procedimento)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar procedimento: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -36,7 +34,7 @@ func (r *ProcedimentoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Procedim
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar procedimento: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &procedimento, nil
 }
@@ -46,7 +44,7 @@ func (r *ProcedimentoRepositoryImpl) GetByPetID(petID ksuid.KSUID) ([]entities.P
 	var procedimentos []entities.Procedimento
 	result := r.db.Preload("Itens").Where("pet_id = ?", petID).Order("data_realizacao DESC").Find(&procedimentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar procedimentos do pet: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return procedimentos, nil
 }
@@ -56,7 +54,7 @@ func (r *ProcedimentoRepositoryImpl) GetByPetshopID(petshopID ksuid.KSUID) ([]en
 	var procedimentos []entities.Procedimento
 	result := r.db.Preload("Itens").Where("petshop_id = ?", petshopID).Order("data_realizacao DESC").Find(&procedimentos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar procedimentos do petshop: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return procedimentos, nil
 }

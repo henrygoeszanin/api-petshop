@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"fmt"
-
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
 	"github.com/henrygoeszanin/api_petshop/domain/errors"
 	"github.com/segmentio/ksuid"
@@ -23,7 +21,7 @@ func NewDonoRepository(db *gorm.DB) *DonoRepositoryImpl {
 func (r *DonoRepositoryImpl) Create(dono *entities.Dono) error {
 	result := r.db.Create(dono)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar dono: %w", result.Error)
+		return errors.ErrInvalidData // Erro genérico para falha ao criar registro
 	}
 	return nil
 }
@@ -36,7 +34,7 @@ func (r *DonoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Dono, error) {
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar dono: %w", result.Error)
+		return nil, errors.ErrInvalidData // Erro genérico para falha ao buscar registro
 	}
 	return &dono, nil
 }
@@ -45,7 +43,7 @@ func (r *DonoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Dono, error) {
 func (r *DonoRepositoryImpl) Update(dono *entities.Dono) error {
 	result := r.db.Save(dono)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao atualizar dono: %w", result.Error)
+		return errors.ErrInvalidData // Erro genérico para falha ao atualizar registro
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -57,7 +55,7 @@ func (r *DonoRepositoryImpl) Update(dono *entities.Dono) error {
 func (r *DonoRepositoryImpl) Delete(id ksuid.KSUID) error {
 	result := r.db.Delete(&entities.Dono{}, "id = ?", id)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao excluir dono: %w", result.Error)
+		return errors.ErrInvalidData // Erro genérico para falha ao excluir registro
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -80,7 +78,7 @@ func (r *DonoRepositoryImpl) List(page, limit int) ([]entities.Dono, error) {
 
 	result := r.db.Offset(offset).Limit(limit).Find(&donos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao listar donos: %w", result.Error)
+		return nil, errors.ErrInvalidData // Erro genérico para falha ao listar registros
 	}
 
 	return donos, nil
@@ -92,9 +90,9 @@ func (r *DonoRepositoryImpl) GetByEmail(email string) (*entities.Dono, error) {
 	result := r.db.Where("email = ?", email).First(&dono)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
-			return nil, nil // Retorna nil quando não encontrado para tratamento no serviço
+			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar dono por email: %w", result.Error)
+		return nil, errors.ErrInvalidData // Erro genérico para falha ao buscar registro
 	}
 
 	return &dono, nil

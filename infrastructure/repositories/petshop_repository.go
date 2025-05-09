@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
@@ -24,7 +23,7 @@ func NewPetshopRepository(db *gorm.DB) *PetshopRepositoryImpl {
 func (r *PetshopRepositoryImpl) Create(petshop *entities.Petshop) error {
 	result := r.db.Create(petshop)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar petshop: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -37,7 +36,7 @@ func (r *PetshopRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Petshop, erro
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar petshop: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &petshop, nil
 }
@@ -46,7 +45,7 @@ func (r *PetshopRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Petshop, erro
 func (r *PetshopRepositoryImpl) Update(petshop *entities.Petshop) error {
 	result := r.db.Save(petshop)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao atualizar petshop: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -58,7 +57,7 @@ func (r *PetshopRepositoryImpl) Update(petshop *entities.Petshop) error {
 func (r *PetshopRepositoryImpl) Delete(id ksuid.KSUID) error {
 	result := r.db.Delete(&entities.Petshop{}, "id = ?", id)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao excluir petshop: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -81,7 +80,7 @@ func (r *PetshopRepositoryImpl) List(page, limit int) ([]entities.Petshop, error
 
 	result := r.db.Offset(offset).Limit(limit).Find(&petshops)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao listar petshops: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 
 	return petshops, nil
@@ -95,7 +94,7 @@ func (r *PetshopRepositoryImpl) GetByEmail(email string) (*entities.Petshop, err
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, nil // Retorna nil quando não encontrado para tratamento no serviço
 		}
-		return nil, fmt.Errorf("erro ao buscar petshop por email: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 
 	return &petshop, nil
@@ -121,7 +120,7 @@ func (r *PetshopRepositoryImpl) FindByCity(city string, page, limit int) ([]enti
 		Find(&petshops)
 
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar petshops por cidade: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 
 	return petshops, nil

@@ -1,0 +1,2309 @@
+{
+  "info": {
+    "_postman_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "name": "API Petshop",
+    "description": "API para gerenciamento de petshops, donos, pets e agendamentos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Login Dono",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuario@exemplo.com\",\n  \"password\": \"senha123\",\n  \"user_type\": \"dono\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Autenticar usuário como dono. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Login Dono",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"usuario@exemplo.com\",\n  \"password\": \"senha123\",\n  \"user_type\": \"dono\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"expire\": \"2023-07-01T15:04:05Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login Petshop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"petshop@exemplo.com\",\n  \"password\": \"senha123\",\n  \"user_type\": \"petshop\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Autenticar usuário como petshop. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Login Petshop",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"petshop@exemplo.com\",\n  \"password\": \"senha123\",\n  \"user_type\": \"petshop\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"expire\": \"2023-07-01T15:04:05Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Registrar Dono",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@exemplo.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"11999998888\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"1000\",\n  \"complemento\": \"Apto 123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register/dono",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "dono"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Registrar novo dono de pet. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Registrar Dono",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@exemplo.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"11999998888\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"1000\",\n  \"complemento\": \"Apto 123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register/dono",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register",
+                    "dono"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@exemplo.com\",\n  \"tipo\": \"dono\",\n  \"telefone\": \"11999998888\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Registrar Petshop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pet Shop Feliz\",\n  \"email\": \"contato@petshopfeliz.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"1133334444\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"2000\",\n  \"complemento\": \"Loja 10\",\n  \"descricao\": \"Petshop especializado em cuidados para cães e gatos\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register/petshop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "petshop"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Registrar novo petshop. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Registrar Petshop",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Pet Shop Feliz\",\n  \"email\": \"contato@petshopfeliz.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"1133334444\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"2000\",\n  \"complemento\": \"Loja 10\",\n  \"descricao\": \"Petshop especializado em cuidados para cães e gatos\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register/petshop",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register",
+                    "petshop"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Pet Shop Feliz\",\n  \"email\": \"contato@petshopfeliz.com\",\n  \"tipo\": \"petshop\",\n  \"telefone\": \"1133334444\",\n  \"descricao\": \"Petshop especializado em cuidados para cães e gatos\",\n  \"nota\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Renovar token JWT expirado. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/refresh",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"expire\": \"2023-07-01T15:04:05Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Encerrar sessão. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Logout",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Successfully logged out\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Informações do Usuário",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Obter informações do usuário autenticado. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Informações do Usuário",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"email\": \"joao@exemplo.com\",\n  \"nome\": \"João Silva\",\n  \"tipo\": \"dono\",\n  \"telefone\": \"11999998888\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Donos",
+      "item": [
+        {
+          "name": "Criar Dono",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria Santos\",\n  \"email\": \"maria@exemplo.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"11977776666\",\n  \"cep\": \"04538132\",\n  \"rua\": \"Rua Exemplo\",\n  \"bairro\": \"Jardim Exemplo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Casa\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/donos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "donos"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Criar um novo dono de pet. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Criar Dono",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Maria Santos\",\n  \"email\": \"maria@exemplo.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"11977776666\",\n  \"cep\": \"04538132\",\n  \"rua\": \"Rua Exemplo\",\n  \"bairro\": \"Jardim Exemplo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Casa\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/donos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "donos"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKtRQw3ZxdJnL6w7KB79vu8h\",\n  \"nome\": \"Maria Santos\",\n  \"email\": \"maria@exemplo.com\",\n  \"telefone\": \"11977776666\",\n  \"cep\": \"04538132\",\n  \"rua\": \"Rua Exemplo\",\n  \"bairro\": \"Jardim Exemplo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Casa\",\n  \"created_at\": \"2023-06-01T10:30:00Z\",\n  \"updated_at\": \"2023-06-01T10:30:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Dono",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao_novo@exemplo.com\",\n  \"telefone\": \"11999997777\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/donos/:donoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "donos",
+                ":donoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "donoId",
+                  "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f",
+                  "description": "(Required) ID do Dono"
+                }
+              ]
+            },
+            "description": "Atualizar dados básicos do dono. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Dono",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao_novo@exemplo.com\",\n  \"telefone\": \"11999997777\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/donos/:donoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "donos",
+                    ":donoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "donoId",
+                      "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao_novo@exemplo.com\",\n  \"telefone\": \"11999997777\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"1000\",\n  \"complemento\": \"Apto 123\",\n  \"created_at\": \"2023-05-15T14:30:00Z\",\n  \"updated_at\": \"2023-06-01T11:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Localização do Dono",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"04545005\",\n  \"rua\": \"Rua Nova\",\n  \"bairro\": \"Jardim Novo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"500\",\n  \"complemento\": \"Bloco B\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/donos/:donoId/localizacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "donos",
+                ":donoId",
+                "localizacao"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "donoId",
+                  "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f",
+                  "description": "(Required) ID do Dono"
+                }
+              ]
+            },
+            "description": "Atualizar endereço do dono. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Localização do Dono",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cep\": \"04545005\",\n  \"rua\": \"Rua Nova\",\n  \"bairro\": \"Jardim Novo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"500\",\n  \"complemento\": \"Bloco B\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/donos/:donoId/localizacao",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "donos",
+                    ":donoId",
+                    "localizacao"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "donoId",
+                      "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao_novo@exemplo.com\",\n  \"telefone\": \"11999997777\",\n  \"cep\": \"04545005\",\n  \"rua\": \"Rua Nova\",\n  \"bairro\": \"Jardim Novo\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"500\",\n  \"complemento\": \"Bloco B\",\n  \"created_at\": \"2023-05-15T14:30:00Z\",\n  \"updated_at\": \"2023-06-01T11:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pets",
+      "item": [
+        {
+          "name": "Criar Pet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Rex\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Labrador\",\n  \"nascimento\": \"2020-03-15\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Criar um novo pet. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Criar Pet",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Rex\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Labrador\",\n  \"nascimento\": \"2020-03-15\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome\": \"Rex\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Labrador\",\n  \"nascimento\": \"2020-03-15\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"created_at\": \"2023-06-01T12:00:00Z\",\n  \"updated_at\": \"2023-06-01T12:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obter Pet por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/:petId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                ":petId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petId",
+                  "value": "1B9vKuVTw4ZxdJnL6w7KB79vu8i",
+                  "description": "(Required) ID do Pet"
+                }
+              ]
+            },
+            "description": "Buscar dados de um pet específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Obter Pet por ID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pets/:petId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets",
+                    ":petId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petId",
+                      "value": "1B9vKuVTw4ZxdJnL6w7KB79vu8i"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome\": \"Rex\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Labrador\",\n  \"nascimento\": \"2020-03-15\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"created_at\": \"2023-06-01T12:00:00Z\",\n  \"updated_at\": \"2023-06-01T12:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar Pets de um Dono",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/donos/:donoId/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "donos",
+                ":donoId",
+                "pets"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "donoId",
+                  "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f",
+                  "description": "(Required) ID do Dono"
+                }
+              ]
+            },
+            "description": "Buscar todos os pets de um dono específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Listar Pets de um Dono",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/donos/:donoId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "donos",
+                    ":donoId",
+                    "pets"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "donoId",
+                      "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n    \"nome\": \"Rex\",\n    \"especie\": \"Cachorro\",\n    \"raca\": \"Labrador\",\n    \"nascimento\": \"2020-03-15\",\n    \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n    \"created_at\": \"2023-06-01T12:00:00Z\",\n    \"updated_at\": \"2023-06-01T12:00:00Z\"\n  },\n  {\n    \"id\": \"1B9vKvXUw5ZxdJnL6w7KB79vu8j\",\n    \"nome\": \"Luna\",\n    \"especie\": \"Gato\",\n    \"raca\": \"Persa\",\n    \"nascimento\": \"2021-05-20\",\n    \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n    \"created_at\": \"2023-06-01T12:15:00Z\",\n    \"updated_at\": \"2023-06-01T12:15:00Z\"\n  }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Petshops",
+      "item": [
+        {
+          "name": "Criar Petshop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mundo Animal\",\n  \"email\": \"contato@mundoanimal.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"1144445555\",\n  \"cep\": \"03133200\",\n  \"rua\": \"Rua dos Bichos\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Rio de Janeiro\",\n  \"estado\": \"RJ\",\n  \"numero\": \"500\",\n  \"complemento\": \"\",\n  \"descricao\": \"Petshop especializado em animais exóticos\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petshops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Criar um novo petshop. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Criar Petshop",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Mundo Animal\",\n  \"email\": \"contato@mundoanimal.com\",\n  \"password\": \"senha123\",\n  \"telefone\": \"1144445555\",\n  \"cep\": \"03133200\",\n  \"rua\": \"Rua dos Bichos\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Rio de Janeiro\",\n  \"estado\": \"RJ\",\n  \"numero\": \"500\",\n  \"complemento\": \"\",\n  \"descricao\": \"Petshop especializado em animais exóticos\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/petshops",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKwZVw6ZxdJnL6w7KB79vu8k\",\n  \"nome\": \"Mundo Animal\",\n  \"email\": \"contato@mundoanimal.com\",\n  \"telefone\": \"1144445555\",\n  \"cep\": \"03133200\",\n  \"rua\": \"Rua dos Bichos\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Rio de Janeiro\",\n  \"estado\": \"RJ\",\n  \"numero\": \"500\",\n  \"descricao\": \"Petshop especializado em animais exóticos\",\n  \"nota\": 0,\n  \"ativo\": true,\n  \"created_at\": \"2023-06-01T13:00:00Z\",\n  \"updated_at\": \"2023-06-01T13:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar Petshops por Cidade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petshops?cidade=São Paulo&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops"
+              ],
+              "query": [
+                {
+                  "key": "cidade",
+                  "value": "São Paulo"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ],
+              "variable": []
+            },
+            "description": "Buscar petshops de uma cidade específica. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Buscar Petshops por Cidade",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/petshops?cidade=São Paulo&page=1&limit=10",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops"
+                  ],
+                  "query": [
+                    {
+                      "key": "cidade",
+                      "value": "São Paulo"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n    \"nome\": \"Pet Shop Feliz\",\n    \"cidade\": \"São Paulo\",\n    \"estado\": \"SP\",\n    \"nota\": 4.5,\n    \"descricao\": \"Petshop especializado em cuidados para cães e gatos\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Buscar Petshop por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Buscar detalhes de um petshop específico. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Buscar Petshop por ID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Pet Shop Feliz\",\n  \"email\": \"contato@petshopfeliz.com\",\n  \"telefone\": \"1133334444\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"2000\",\n  \"complemento\": \"Loja 10\",\n  \"descricao\": \"Petshop especializado em cuidados para cães e gatos\",\n  \"nota\": 4.5,\n  \"ativo\": true,\n  \"created_at\": \"2023-05-20T10:00:00Z\",\n  \"updated_at\": \"2023-06-01T13:30:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Petshop",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pet Shop Super Feliz\",\n  \"email\": \"novo@petshopfeliz.com\",\n  \"telefone\": \"1133335555\",\n  \"descricao\": \"Petshop premium com serviços exclusivos\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Atualizar dados básicos de um petshop. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Petshop",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Pet Shop Super Feliz\",\n  \"email\": \"novo@petshopfeliz.com\",\n  \"telefone\": \"1133335555\",\n  \"descricao\": \"Petshop premium com serviços exclusivos\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Pet Shop Super Feliz\",\n  \"email\": \"novo@petshopfeliz.com\",\n  \"telefone\": \"1133335555\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"2000\",\n  \"complemento\": \"Loja 10\",\n  \"descricao\": \"Petshop premium com serviços exclusivos\",\n  \"nota\": 4.5,\n  \"ativo\": true,\n  \"created_at\": \"2023-05-20T10:00:00Z\",\n  \"updated_at\": \"2023-06-01T14:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Endereço do Petshop",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"04533001\",\n  \"rua\": \"Rua Novo Endereço\",\n  \"bairro\": \"Itaim Bibi\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Térreo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId/endereco",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId",
+                "endereco"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Atualizar endereço de um petshop. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Endereço do Petshop",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cep\": \"04533001\",\n  \"rua\": \"Rua Novo Endereço\",\n  \"bairro\": \"Itaim Bibi\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Térreo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId/endereco",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId",
+                    "endereco"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Pet Shop Super Feliz\",\n  \"email\": \"novo@petshopfeliz.com\",\n  \"telefone\": \"1133335555\",\n  \"cep\": \"04533001\",\n  \"rua\": \"Rua Novo Endereço\",\n  \"bairro\": \"Itaim Bibi\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"100\",\n  \"complemento\": \"Térreo\",\n  \"descricao\": \"Petshop premium com serviços exclusivos\",\n  \"nota\": 4.5,\n  \"ativo\": true,\n  \"created_at\": \"2023-05-20T10:00:00Z\",\n  \"updated_at\": \"2023-06-01T14:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Serviços",
+      "item": [
+        {
+          "name": "Criar Serviço",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Banho e Tosa\",\n  \"descricao\": \"Banho completo com shampoo especial e tosa higiênica\",\n  \"preco_base\": 80.00\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId/servicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId",
+                "servicos"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Adicionar um novo serviço para um petshop. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Criar Serviço",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Banho e Tosa\",\n  \"descricao\": \"Banho completo com shampoo especial e tosa higiênica\",\n  \"preco_base\": 80.00\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId/servicos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId",
+                    "servicos"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Banho e Tosa\",\n  \"descricao\": \"Banho completo com shampoo especial e tosa higiênica\",\n  \"preco_base\": 80.00,\n  \"ativo\": true,\n  \"created_at\": \"2023-06-01T15:00:00Z\",\n  \"updated_at\": \"2023-06-01T15:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar Serviços de um Petshop",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId/servicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId",
+                "servicos"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Buscar todos os serviços oferecidos por um petshop. Requires Auth: false"
+          },
+          "response": [
+            {
+              "name": "Example for Listar Serviços de um Petshop",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId/servicos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId",
+                    "servicos"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n    \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n    \"nome\": \"Banho e Tosa\",\n    \"descricao\": \"Banho completo com shampoo especial e tosa higiênica\",\n    \"preco_base\": 80.00,\n    \"ativo\": true,\n    \"created_at\": \"2023-06-01T15:00:00Z\",\n    \"updated_at\": \"2023-06-01T15:00:00Z\"\n  },\n  {\n    \"id\": \"1B9vKycXw8ZxdJnL6w7KB79vu8m\",\n    \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n    \"nome\": \"Consulta Veterinária\",\n    \"descricao\": \"Avaliação completa com veterinário especializado\",\n    \"preco_base\": 120.00,\n    \"ativo\": true,\n    \"created_at\": \"2023-06-01T15:15:00Z\",\n    \"updated_at\": \"2023-06-01T15:15:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Obter Serviço por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/servicos/:servicoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicos",
+                ":servicoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "servicoId",
+                  "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l",
+                  "description": "(Required) ID do Serviço"
+                }
+              ]
+            },
+            "description": "Buscar detalhes de um serviço específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Obter Serviço por ID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/servicos/:servicoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "servicos",
+                    ":servicoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "servicoId",
+                      "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Banho e Tosa\",\n  \"descricao\": \"Banho completo com shampoo especial e tosa higiênica\",\n  \"preco_base\": 80.00,\n  \"ativo\": true,\n  \"created_at\": \"2023-06-01T15:00:00Z\",\n  \"updated_at\": \"2023-06-01T15:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Serviço",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Banho e Tosa Premium\",\n  \"descricao\": \"Banho completo com produtos importados e tosa completa\",\n  \"preco_base\": 100.00\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/servicos/:servicoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicos",
+                ":servicoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "servicoId",
+                  "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l",
+                  "description": "(Required) ID do Serviço"
+                }
+              ]
+            },
+            "description": "Atualizar um serviço existente. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Serviço",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Banho e Tosa Premium\",\n  \"descricao\": \"Banho completo com produtos importados e tosa completa\",\n  \"preco_base\": 100.00\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/servicos/:servicoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "servicos",
+                    ":servicoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "servicoId",
+                      "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome\": \"Banho e Tosa Premium\",\n  \"descricao\": \"Banho completo com produtos importados e tosa completa\",\n  \"preco_base\": 100.00,\n  \"ativo\": true,\n  \"created_at\": \"2023-06-01T15:00:00Z\",\n  \"updated_at\": \"2023-06-01T16:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Excluir Serviço",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/servicos/:servicoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicos",
+                ":servicoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "servicoId",
+                  "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l",
+                  "description": "(Required) ID do Serviço"
+                }
+              ]
+            },
+            "description": "Remover um serviço existente. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Excluir Serviço",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/servicos/:servicoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "servicos",
+                    ":servicoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "servicoId",
+                      "value": "1B9vKxaWw7ZxdJnL6w7KB79vu8l"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Serviço excluído com sucesso\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agendamentos",
+      "item": [
+        {
+          "name": "Criar Agendamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"data_agendada\": \"2023-07-10T14:00:00Z\",\n  \"observacoes\": \"Rex prefere secador no mínimo\",\n  \"total_previsto\": 100.00,\n  \"itens\": [\n    {\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"preco_previsto\": 100.00\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/agendamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agendamentos"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Criar um novo agendamento. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Criar Agendamento",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"data_agendada\": \"2023-07-10T14:00:00Z\",\n  \"observacoes\": \"Rex prefere secador no mínimo\",\n  \"total_previsto\": 100.00,\n  \"itens\": [\n    {\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"preco_previsto\": 100.00\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/agendamentos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agendamentos"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome_dono\": \"João Silva\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome_pet\": \"Rex\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome_petshop\": \"Pet Shop Feliz\",\n  \"data_agendada\": \"2023-07-10T14:00:00Z\",\n  \"status\": \"pendente\",\n  \"observacoes\": \"Rex prefere secador no mínimo\",\n  \"total_previsto\": 100.00,\n  \"itens\": [\n    {\n      \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"nome_servico\": \"Banho e Tosa Premium\",\n      \"preco_previsto\": 100.00\n    }\n  ],\n  \"created_at\": \"2023-06-01T17:00:00Z\",\n  \"updated_at\": \"2023-06-01T17:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obter Agendamento por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/agendamentos/:agendamentoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agendamentos",
+                ":agendamentoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "agendamentoId",
+                  "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n",
+                  "description": "(Required) ID do Agendamento"
+                }
+              ]
+            },
+            "description": "Buscar detalhes de um agendamento específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Obter Agendamento por ID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/agendamentos/:agendamentoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agendamentos",
+                    ":agendamentoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "agendamentoId",
+                      "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome_dono\": \"João Silva\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome_pet\": \"Rex\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome_petshop\": \"Pet Shop Feliz\",\n  \"data_agendada\": \"2023-07-10T14:00:00Z\",\n  \"status\": \"pendente\",\n  \"observacoes\": \"Rex prefere secador no mínimo\",\n  \"total_previsto\": 100.00,\n  \"itens\": [\n    {\n      \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"nome_servico\": \"Banho e Tosa Premium\",\n      \"preco_previsto\": 100.00\n    }\n  ],\n  \"created_at\": \"2023-06-01T17:00:00Z\",\n  \"updated_at\": \"2023-06-01T17:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar Agendamentos de um Dono",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/donos/:donoId/agendamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "donos",
+                ":donoId",
+                "agendamentos"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "donoId",
+                  "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f",
+                  "description": "(Required) ID do Dono"
+                }
+              ]
+            },
+            "description": "Buscar todos os agendamentos de um dono específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Listar Agendamentos de um Dono",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/donos/:donoId/agendamentos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "donos",
+                    ":donoId",
+                    "agendamentos"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "donoId",
+                      "value": "1B9vKoLDwYZxdJnL6w7KB79vu8f"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n    \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n    \"nome_dono\": \"João Silva\",\n    \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n    \"nome_pet\": \"Rex\",\n    \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n    \"nome_petshop\": \"Pet Shop Feliz\",\n    \"data_agendada\": \"2023-07-10T14:00:00Z\",\n    \"status\": \"pendente\",\n    \"observacoes\": \"Rex prefere secador no mínimo\",\n    \"total_previsto\": 100.00,\n    \"itens\": [\n      {\n        \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n        \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n        \"nome_servico\": \"Banho e Tosa Premium\",\n        \"preco_previsto\": 100.00\n      }\n    ],\n    \"created_at\": \"2023-06-01T17:00:00Z\",\n    \"updated_at\": \"2023-06-01T17:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Listar Agendamentos de um Petshop",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petshops/:petshopId/agendamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "petshops",
+                ":petshopId",
+                "agendamentos"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "petshopId",
+                  "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g",
+                  "description": "(Required) ID do Petshop"
+                }
+              ]
+            },
+            "description": "Buscar todos os agendamentos de um petshop específico. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Listar Agendamentos de um Petshop",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/petshops/:petshopId/agendamentos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "petshops",
+                    ":petshopId",
+                    "agendamentos"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "petshopId",
+                      "value": "1B9vKrMNw2ZxdJnL6w7KB79vu8g"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n    \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n    \"nome_dono\": \"João Silva\",\n    \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n    \"nome_pet\": \"Rex\",\n    \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n    \"nome_petshop\": \"Pet Shop Feliz\",\n    \"data_agendada\": \"2023-07-10T14:00:00Z\",\n    \"status\": \"pendente\",\n    \"observacoes\": \"Rex prefere secador no mínimo\",\n    \"total_previsto\": 100.00,\n    \"itens\": [\n      {\n        \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n        \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n        \"nome_servico\": \"Banho e Tosa Premium\",\n        \"preco_previsto\": 100.00\n      }\n    ],\n    \"created_at\": \"2023-06-01T17:00:00Z\",\n    \"updated_at\": \"2023-06-01T17:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Status do Agendamento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/agendamentos/:agendamentoId/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agendamentos",
+                ":agendamentoId",
+                "status"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "agendamentoId",
+                  "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n",
+                  "description": "(Required) ID do Agendamento"
+                }
+              ]
+            },
+            "description": "Atualizar o status de um agendamento. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Status do Agendamento",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"confirmado\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/agendamentos/:agendamentoId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agendamentos",
+                    ":agendamentoId",
+                    "status"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "agendamentoId",
+                      "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome_dono\": \"João Silva\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome_pet\": \"Rex\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome_petshop\": \"Pet Shop Feliz\",\n  \"data_agendada\": \"2023-07-10T14:00:00Z\",\n  \"status\": \"confirmado\",\n  \"observacoes\": \"Rex prefere secador no mínimo\",\n  \"total_previsto\": 100.00,\n  \"itens\": [\n    {\n      \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"nome_servico\": \"Banho e Tosa Premium\",\n      \"preco_previsto\": 100.00\n    }\n  ],\n  \"created_at\": \"2023-06-01T17:00:00Z\",\n  \"updated_at\": \"2023-06-01T18:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Agendamento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data_agendada\": \"2023-07-15T15:30:00Z\",\n  \"observacoes\": \"Rex prefere secador no mínimo. Trazer focinheira.\",\n  \"total_previsto\": 180.00,\n  \"itens\": [\n    {\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"preco_previsto\": 100.00\n    },\n    {\n      \"servico_id\": \"1B9vKycXw8ZxdJnL6w7KB79vu8m\",\n      \"preco_previsto\": 80.00\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/agendamentos/:agendamentoId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agendamentos",
+                ":agendamentoId"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "agendamentoId",
+                  "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n",
+                  "description": "(Required) ID do Agendamento"
+                }
+              ]
+            },
+            "description": "Atualizar detalhes de um agendamento. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Atualizar Agendamento",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_agendada\": \"2023-07-15T15:30:00Z\",\n  \"observacoes\": \"Rex prefere secador no mínimo. Trazer focinheira.\",\n  \"total_previsto\": 180.00,\n  \"itens\": [\n    {\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"preco_previsto\": 100.00\n    },\n    {\n      \"servico_id\": \"1B9vKycXw8ZxdJnL6w7KB79vu8m\",\n      \"preco_previsto\": 80.00\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/agendamentos/:agendamentoId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agendamentos",
+                    ":agendamentoId"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "agendamentoId",
+                      "value": "1B9vKzeeW9ZxdJnL6w7KB79vu8n"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKzeeW9ZxdJnL6w7KB79vu8n\",\n  \"dono_id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome_dono\": \"João Silva\",\n  \"pet_id\": \"1B9vKuVTw4ZxdJnL6w7KB79vu8i\",\n  \"nome_pet\": \"Rex\",\n  \"petshop_id\": \"1B9vKrMNw2ZxdJnL6w7KB79vu8g\",\n  \"nome_petshop\": \"Pet Shop Feliz\",\n  \"data_agendada\": \"2023-07-15T15:30:00Z\",\n  \"status\": \"confirmado\",\n  \"observacoes\": \"Rex prefere secador no mínimo. Trazer focinheira.\",\n  \"total_previsto\": 180.00,\n  \"itens\": [\n    {\n      \"id\": \"1B9vL0fgWaZxdJnL6w7KB79vu8o\",\n      \"servico_id\": \"1B9vKxaWw7ZxdJnL6w7KB79vu8l\",\n      \"nome_servico\": \"Banho e Tosa Premium\",\n      \"preco_previsto\": 100.00\n    },\n    {\n      \"id\": \"1B9vL1hiWbZxdJnL6w7KB79vu8p\",\n      \"servico_id\": \"1B9vKycXw8ZxdJnL6w7KB79vu8m\",\n      \"nome_servico\": \"Consulta Veterinária\",\n      \"preco_previsto\": 80.00\n    }\n  ],\n  \"created_at\": \"2023-06-01T17:00:00Z\",\n  \"updated_at\": \"2023-06-01T18:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Perfil",
+      "item": [
+        {
+          "name": "Obter Perfil Atual",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "description": "Obter dados do perfil do usuário autenticado. Requires Auth: true"
+          },
+          "response": [
+            {
+              "name": "Example for Obter Perfil Atual",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"1B9vKoLDwYZxdJnL6w7KB79vu8f\",\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@exemplo.com\",\n  \"telefone\": \"11999998888\",\n  \"cep\": \"01001000\",\n  \"rua\": \"Avenida Paulista\",\n  \"bairro\": \"Bela Vista\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"numero\": \"1000\",\n  \"complemento\": \"Apto 123\",\n  \"created_at\": \"2023-05-15T14:30:00Z\",\n  \"updated_at\": \"2023-06-01T11:00:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"fmt"
-
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
 	"github.com/henrygoeszanin/api_petshop/domain/errors"
 	"github.com/segmentio/ksuid"
@@ -23,7 +21,7 @@ func NewServicoRepository(db *gorm.DB) *ServicoRepositoryImpl {
 func (r *ServicoRepositoryImpl) Create(servico *entities.Servico) error {
 	result := r.db.Create(servico)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar serviço: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -36,7 +34,7 @@ func (r *ServicoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Servico, erro
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar serviço: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &servico, nil
 }
@@ -45,7 +43,7 @@ func (r *ServicoRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Servico, erro
 func (r *ServicoRepositoryImpl) Update(servico *entities.Servico) error {
 	result := r.db.Save(servico)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao atualizar serviço: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -57,7 +55,7 @@ func (r *ServicoRepositoryImpl) Update(servico *entities.Servico) error {
 func (r *ServicoRepositoryImpl) Delete(id ksuid.KSUID) error {
 	result := r.db.Delete(&entities.Servico{}, "id = ?", id)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao excluir serviço: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -70,7 +68,7 @@ func (r *ServicoRepositoryImpl) GetByPetshopID(petshopID ksuid.KSUID) ([]entitie
 	var servicos []entities.Servico
 	result := r.db.Where("petshop_id = ?", petshopID).Find(&servicos)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar serviços do petshop: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return servicos, nil
 }
@@ -83,7 +81,7 @@ func (r *ServicoRepositoryImpl) GetByName(petshopID ksuid.KSUID, nome string) (*
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, nil // Retorna nil quando não encontrado para tratamento no serviço
 		}
-		return nil, fmt.Errorf("erro ao buscar serviço por nome: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &servico, nil
 }

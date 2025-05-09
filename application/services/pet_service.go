@@ -68,7 +68,7 @@ func (s *PetService) Create(dto *dtos.PetCreateDTO) (*dtos.PetResponseDTO, error
 func (s *PetService) GetByID(id ksuid.KSUID) (*dtos.PetResponseDTO, error) {
 	pet, err := s.petRepository.GetByID(id)
 	if err != nil {
-		return nil, err
+		return nil, errors.ErrNotFound
 	}
 	return s.entityToResponseDTO(pet), nil
 }

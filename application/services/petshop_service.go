@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -29,7 +28,7 @@ func (s *PetshopService) Create(dto *dtos.PetshopCreateDTO) (*dtos.PetshopDetail
 	// Verificar duplicidade por email
 	existing, err := s.petshopRepository.GetByEmail(dto.Email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao verificar petshop existente: %w", err)
+		return nil, errors.ErrCheckExistingPetshop
 	}
 	if existing != nil {
 		return nil, errors.ErrAlreadyExists
@@ -54,12 +53,12 @@ func (s *PetshopService) Create(dto *dtos.PetshopCreateDTO) (*dtos.PetshopDetail
 
 	// Gerar hash da senha
 	if err := petshop.SetPassword(dto.Password); err != nil {
-		return nil, fmt.Errorf("falha ao definir senha: %w", err)
+		return nil, err
 	}
 
 	// Salvar no repositório
 	if err := s.petshopRepository.Create(petshop); err != nil {
-		return nil, fmt.Errorf("falha ao criar petshop: %w", err)
+		return nil, err
 	}
 
 	// Preparar DTO de resposta
@@ -87,7 +86,7 @@ func (s *PetshopService) Update(id ksuid.KSUID, dto *dtos.PetshopUpdateDTO) (*dt
 	if petshop.Email != dto.Email {
 		existing, err := s.petshopRepository.GetByEmail(dto.Email)
 		if err != nil {
-			return nil, fmt.Errorf("falha ao verificar petshop existente: %w", err)
+			return nil, errors.ErrCheckExistingPetshop
 		}
 		if existing != nil && existing.ID != petshop.ID {
 			return nil, errors.ErrAlreadyExists
@@ -102,7 +101,7 @@ func (s *PetshopService) Update(id ksuid.KSUID, dto *dtos.PetshopUpdateDTO) (*dt
 
 	// Salvar no repositório
 	if err := s.petshopRepository.Update(petshop); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar petshop: %w", err)
+		return nil, err
 	}
 
 	return s.entityToDetailDTO(petshop), nil
@@ -127,7 +126,7 @@ func (s *PetshopService) UpdateEndereco(id ksuid.KSUID, dto *dtos.PetshopUpdateE
 
 	// Salvar no repositório
 	if err := s.petshopRepository.Update(petshop); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar endereço do petshop: %w", err)
+		return nil, err
 	}
 
 	return s.entityToDetailDTO(petshop), nil
@@ -141,7 +140,7 @@ func (s *PetshopService) FindByCity(city string, page, limit int) ([]dtos.Petsho
 	// Buscar no repositório
 	petshops, err := s.petshopRepository.FindByCity(normalizedCity, page, limit)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar petshops por cidade: %w", err)
+		return nil, err
 	}
 
 	// Converter para DTOs de listagem
@@ -165,7 +164,7 @@ func (s *PetshopService) List(page, limit int) ([]dtos.PetshopListItemDTO, error
 	// Buscar no repositório
 	petshops, err := s.petshopRepository.List(page, limit)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao listar petshops: %w", err)
+		return nil, err
 	}
 
 	// Converter para DTOs de listagem

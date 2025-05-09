@@ -41,7 +41,7 @@ func SetupAgendamentoRoutes(router *gin.Engine, agendamentoHandler *handlers.Age
 		{
 			// GET /donos/:donoId/agendamentos - Listar todos os agendamentos de um dono
 			// Middleware verifica se o usuário autenticado é o próprio dono
-			protected.GET("/:donoId/agendamentos", middlewares.DonoOwnershipRequired(), agendamentoHandler.GetByDonoID)
+			protected.GET("/:id/agendamentos", middlewares.DonoOwnershipRequired(), agendamentoHandler.GetByDonoID)
 		}
 	}
 

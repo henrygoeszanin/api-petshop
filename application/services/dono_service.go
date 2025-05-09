@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
@@ -28,7 +27,7 @@ func (s *DonoService) Create(dto *dtos.DonoCreateDTO) (*dtos.DonoDetailDTO, erro
 	// Verificar duplicidade por email
 	existing, err := s.donoRepository.GetByEmail(dto.Email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao verificar dono existente: %w", err)
+		return nil, errors.ErrCheckExistingOwner
 	}
 	if existing != nil {
 		return nil, errors.ErrAlreadyExists
@@ -50,12 +49,12 @@ func (s *DonoService) Create(dto *dtos.DonoCreateDTO) (*dtos.DonoDetailDTO, erro
 
 	// Gerar hash da senha
 	if err := dono.SetPassword(dto.Password); err != nil {
-		return nil, fmt.Errorf("falha ao definir senha: %w", err)
+		return nil, errors.ErrSetPassword
 	}
 
 	// Salvar no repositório
 	if err := s.donoRepository.Create(dono); err != nil {
-		return nil, fmt.Errorf("falha ao criar dono: %w", err)
+		return nil, errors.ErrCreateOwner
 	}
 
 	// Preparar DTO de resposta
@@ -83,7 +82,7 @@ func (s *DonoService) Update(id ksuid.KSUID, dto *dtos.DonoUpdateDTO) (*dtos.Don
 	if dono.Email != dto.Email {
 		existing, err := s.donoRepository.GetByEmail(dto.Email)
 		if err != nil {
-			return nil, fmt.Errorf("falha ao verificar dono existente: %w", err)
+			return nil, errors.ErrCheckExistingOwner
 		}
 		if existing != nil && existing.ID != dono.ID {
 			return nil, errors.ErrAlreadyExists
@@ -97,7 +96,7 @@ func (s *DonoService) Update(id ksuid.KSUID, dto *dtos.DonoUpdateDTO) (*dtos.Don
 
 	// Salvar no repositório
 	if err := s.donoRepository.Update(dono); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar dono: %w", err)
+		return nil, errors.ErrUpdateOwner
 	}
 
 	return s.entityToDetailDTO(dono), nil
@@ -122,7 +121,7 @@ func (s *DonoService) UpdateLocalizacao(id ksuid.KSUID, dto *dtos.DonoUpdateLoca
 
 	// Salvar no repositório
 	if err := s.donoRepository.Update(dono); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar localização do dono: %w", err)
+		return nil, errors.ErrUpdateOwnerLocation
 	}
 
 	return s.entityToDetailDTO(dono), nil

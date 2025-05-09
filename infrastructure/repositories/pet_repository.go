@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"fmt"
-
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
 	"github.com/henrygoeszanin/api_petshop/domain/errors"
 	"github.com/segmentio/ksuid"
@@ -23,7 +21,7 @@ func NewPetRepository(db *gorm.DB) *PetRepositoryImpl {
 func (r *PetRepositoryImpl) Create(pet *entities.Pet) error {
 	result := r.db.Create(pet)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao criar pet: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -36,7 +34,7 @@ func (r *PetRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Pet, error) {
 		if result.Error == gorm.ErrRecordNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao buscar pet: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return &pet, nil
 }
@@ -45,7 +43,7 @@ func (r *PetRepositoryImpl) GetByID(id ksuid.KSUID) (*entities.Pet, error) {
 func (r *PetRepositoryImpl) Update(pet *entities.Pet) error {
 	result := r.db.Save(pet)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao atualizar pet: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -57,7 +55,7 @@ func (r *PetRepositoryImpl) Update(pet *entities.Pet) error {
 func (r *PetRepositoryImpl) Delete(id ksuid.KSUID) error {
 	result := r.db.Delete(&entities.Pet{}, "id = ?", id)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao excluir pet: %w", result.Error)
+		return errors.ErrInvalidData
 	}
 	if result.RowsAffected == 0 {
 		return errors.ErrNotFound
@@ -70,7 +68,7 @@ func (r *PetRepositoryImpl) GetByDonoID(donoID ksuid.KSUID) ([]entities.Pet, err
 	var pets []entities.Pet
 	result := r.db.Where("dono_id = ?", donoID).Find(&pets)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao buscar pets do dono: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return pets, nil
 }
@@ -82,7 +80,7 @@ func (r *PetRepositoryImpl) List(page, limit int) ([]entities.Pet, error) {
 
 	result := r.db.Offset(offset).Limit(limit).Find(&pets)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao listar pets: %w", result.Error)
+		return nil, errors.ErrInvalidData
 	}
 	return pets, nil
 }

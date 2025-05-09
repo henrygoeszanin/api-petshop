@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
 	"github.com/henrygoeszanin/api_petshop/application/interfaces/repositories"
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
@@ -27,15 +25,15 @@ func NewAuthService(donoRepo repositories.DonoRepository, petshopRepo repositori
 func (s *AuthService) AuthenticateDono(email, password string) (*dtos.DonoResponseDTO, error) {
 	dono, err := s.donoRepository.GetByEmail(email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar dono: %w", err)
+		return nil, errors.ErrFailedToFetchDono
 	}
 
 	if dono == nil {
-		return nil, errors.ErrUnauthorized
+		return nil, errors.ErrInvalidCredentials
 	}
 
 	if !dono.CheckPassword(password) {
-		return nil, errors.ErrUnauthorized
+		return nil, errors.ErrInvalidCredentials
 	}
 
 	// Criar DTO de resposta
@@ -56,15 +54,15 @@ func (s *AuthService) AuthenticateDono(email, password string) (*dtos.DonoRespon
 func (s *AuthService) AuthenticatePetshop(email, password string) (*dtos.PetshopResponseDTO, error) {
 	petshop, err := s.petshopRepository.GetByEmail(email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar petshop: %w", err)
+		return nil, errors.ErrFailedToFetchPetshop
 	}
 
 	if petshop == nil {
-		return nil, errors.ErrUnauthorized
+		return nil, errors.ErrInvalidCredentials
 	}
 
 	if !petshop.CheckPassword(password) {
-		return nil, errors.ErrUnauthorized
+		return nil, errors.ErrInvalidCredentials
 	}
 
 	// Criar DTO de resposta
@@ -88,7 +86,7 @@ func (s *AuthService) RegisterDono(dto *dtos.DonoRegisterDTO) (*dtos.DonoRespons
 	// Verificar duplicidade por email
 	existing, err := s.donoRepository.GetByEmail(dto.Email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao verificar dono existente: %w", err)
+		return nil, errors.ErrFailedToCheckDono
 	}
 	if existing != nil {
 		return nil, errors.ErrAlreadyExists
@@ -108,11 +106,11 @@ func (s *AuthService) RegisterDono(dto *dtos.DonoRegisterDTO) (*dtos.DonoRespons
 	}
 	// Gerar hash da senha
 	if err := dono.SetPassword(dto.Password); err != nil {
-		return nil, fmt.Errorf("falha ao definir senha: %w", err)
+		return nil, errors.ErrFailedToSetPassword
 	}
 	// Salvar no repositório
 	if err := s.donoRepository.Create(dono); err != nil {
-		return nil, fmt.Errorf("falha ao criar dono: %w", err)
+		return nil, errors.ErrFailedToCreateDono
 	}
 	// Preparar DTO de resposta
 	resp := &dtos.DonoResponseDTO{
@@ -132,7 +130,7 @@ func (s *AuthService) RegisterPetshop(dto *dtos.PetshopRegisterDTO) (*dtos.Petsh
 	// Verificar duplicidade por email
 	existing, err := s.petshopRepository.GetByEmail(dto.Email)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao verificar petshop existente: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 	if existing != nil {
 		return nil, errors.ErrAlreadyExists
@@ -153,11 +151,11 @@ func (s *AuthService) RegisterPetshop(dto *dtos.PetshopRegisterDTO) (*dtos.Petsh
 	}
 	// Gerar hash da senha
 	if err := petshop.SetPassword(dto.Password); err != nil {
-		return nil, fmt.Errorf("falha ao definir senha: %w", err)
+		return nil, errors.ErrFailedToSetPassword
 	}
 	// Salvar no repositório
 	if err := s.petshopRepository.Create(petshop); err != nil {
-		return nil, fmt.Errorf("falha ao criar petshop: %w", err)
+		return nil, errors.ErrFailedToCreatePetshop
 	}
 	// Preparar DTO de resposta
 	resp := &dtos.PetshopResponseDTO{
