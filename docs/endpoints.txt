@@ -1,23 +1,4 @@
-1. Donos (Usuários)
-Método	Rota	Descrição
-POST	/donos	Criar um novo dono. Recebe nome, e-mail, telefone.
-GET	/donos/:id	Retornar dados do dono por ID.
-PUT	/donos/:id	Atualizar dados do dono (nome, e-mail, telefone).
-PUT	/donos/:id/localizacao	Atualizar cidade/localização do dono.
-
-2. Pets
-Método	Rota	Descrição
-POST	/pets	Criar um novo pet. Recebe nome, espécie, raça, data de nascimento e dono_id. Valida que o dono existe.
-GET	/pets/:id	Retornar dados do pet por ID.
-GET	/donos/:id/pets	Listar todos os pets de um determinado dono.
-
-3. Petshops
-Método	Rota	Descrição
-POST	/petshops	Cadastrar um novo petshop (nome, CNPJ, endereço…).
-GET	/petshops/:id	Buscar dados de um petshop por ID.
-GET	/petshops?cidade={cidade}	Listar petshops na cidade informada. Aplicar padronização/case-insensitive.
 4. Serviços
-
 Método	Rota	Descrição
 POST	/petshops/:petshopId/servicos	Adicionar um serviço a um petshop. Recebe nome, descrição e preço base. Valida petshopId.
 GET	/petshops/:petshopId/servicos	Listar todos os serviços disponíveis naquele petshop.
