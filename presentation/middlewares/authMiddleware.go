@@ -56,31 +56,6 @@ func TokenExtractor() gin.HandlerFunc {
 	}
 }
 
-// AdminRequired é um middleware que verifica se o usuário autenticado possui privilégios de administrador
-// através da propriedade "is_admin" nas claims do JWT. Caso contrário, a requisição é abortada com
-// status 403 Forbidden.
-func AdminRequired() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Extrai as claims do token JWT da requisição atual
-		claims := jwt.ExtractClaims(c)
-
-		// Verifica se a claim "is_admin" existe e se seu valor é true
-		isAdmin, exists := claims["is_admin"]
-		if !exists || isAdmin != true {
-			// Retorna erro 403 para usuários não administradores
-			c.JSON(http.StatusForbidden, gin.H{
-				"code":    http.StatusForbidden,
-				"message": "Acesso restrito a administradores",
-			})
-			c.Abort() // Interrompe a execução de middlewares subsequentes
-			return
-		}
-
-		// Se for admin, permite a continuação da requisição
-		c.Next()
-	}
-}
-
 // PetshopRequired é um middleware que verifica se o usuário autenticado é um petshop
 // através da propriedade "tipo" nas claims do JWT. Caso contrário, a requisição é abortada com
 // status 403 Forbidden.

@@ -15,13 +15,6 @@ func DonoOwnershipRequired() gin.HandlerFunc {
 		// Extrai as claims do token JWT
 		claims := jwt.ExtractClaims(c)
 
-		// Verifica se é admin (eles podem acessar qualquer recurso)
-		isAdmin, exists := claims["is_admin"]
-		if exists && isAdmin == true {
-			c.Next()
-			return
-		}
-
 		// Verifica o tipo de usuário
 		tipo, tipoExists := claims["tipo"]
 		if !tipoExists || tipo != "dono" {
