@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
@@ -42,59 +41,57 @@ func (s *AgendamentoService) Create(dto *dtos.AgendamentoCreateDTO) (*dtos.Agend
 	// Converter IDs de string para KSUID
 	donoID, err := ksuid.Parse(dto.DonoID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do dono inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
 
 	petID, err := ksuid.Parse(dto.PetID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do pet inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
 
 	petshopID, err := ksuid.Parse(dto.PetshopID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do petshop inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
-
 	// Verificar se o dono existe
 	dono, err := s.donoRepository.GetByID(donoID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("dono não encontrado")
+			return nil, errors.ErrDonoNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar dono: %w", err)
+		return nil, errors.ErrFailedToCheckDono
 	}
 
 	// Verificar se o pet existe e se pertence ao dono
 	pet, err := s.petRepository.GetByID(petID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("pet não encontrado")
+			return nil, errors.ErrPetNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar pet: %w", err)
+		return nil, errors.ErrFailedToCheckPet
 	}
 
 	if pet.DonoID != donoID {
-		return nil, fmt.Errorf("o pet não pertence ao dono especificado")
+		return nil, errors.ErrPetNotOwnedByDono
 	}
-
 	// Verificar se o petshop existe
 	petshop, err := s.petshopRepository.GetByID(petshopID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("petshop não encontrado")
+			return nil, errors.ErrPetshopNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar petshop: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 
 	// Converter data de string para time.Time
 	dataAgendada, err := time.Parse("2006-01-02T15:04:05Z07:00", dto.DataAgendada)
 	if err != nil {
-		return nil, fmt.Errorf("formato de data inválido, use ISO 8601: %w", err)
+		return nil, errors.ErrInvalidDate
 	}
 
 	// Validar que a data não é passada
 	if dataAgendada.Before(time.Now()) {
-		return nil, fmt.Errorf("a data agendada não pode ser no passado")
+		return nil, errors.ErrPastDate
 	}
 
 	// Criar entidade Agendamento
@@ -114,24 +111,24 @@ func (s *AgendamentoService) Create(dto *dtos.AgendamentoCreateDTO) (*dtos.Agend
 	for _, itemDTO := range dto.Itens {
 		servicoID, err := ksuid.Parse(itemDTO.ServicoID)
 		if err != nil {
-			return nil, fmt.Errorf("ID de serviço inválido: %w", err)
+			return nil, errors.ErrInvalidID
 		}
 
 		// Verificar se o serviço existe e pertence ao petshop
 		servico, err := s.servicoRepository.GetByID(servicoID)
 		if err != nil {
 			if err == errors.ErrNotFound {
-				return nil, fmt.Errorf("serviço não encontrado")
+				return nil, errors.ErrServiceNotFound
 			}
-			return nil, fmt.Errorf("erro ao verificar serviço: %w", err)
+			return nil, errors.ErrFailedToCheckService
 		}
 
 		if servico.PetshopID != petshopID {
-			return nil, fmt.Errorf("o serviço não pertence ao petshop especificado")
+			return nil, errors.ErrServiceNotFromPetshop
 		}
 
 		if !servico.Ativo {
-			return nil, fmt.Errorf("o serviço '%s' não está ativo", servico.Nome)
+			return nil, errors.ErrServiceInactive
 		}
 
 		// Adicionar item ao agendamento
@@ -143,15 +140,14 @@ func (s *AgendamentoService) Create(dto *dtos.AgendamentoCreateDTO) (*dtos.Agend
 
 		totalCalculado += itemDTO.PrecoPrevisto
 	}
-
 	// Validar o total previsto
 	if totalCalculado != dto.TotalPrevisto {
-		return nil, fmt.Errorf("o total previsto (%f) não corresponde à soma dos preços dos itens (%f)", dto.TotalPrevisto, totalCalculado)
+		return nil, errors.ErrTotalPrevistoMismatch
 	}
 
 	// Salvar no repositório
 	if err := s.agendamentoRepository.Create(agendamento); err != nil {
-		return nil, fmt.Errorf("falha ao criar agendamento: %w", err)
+		return nil, errors.ErrFailedToCreateAgendamento
 	}
 
 	// Converter para DTO de resposta
@@ -169,17 +165,17 @@ func (s *AgendamentoService) GetByID(id ksuid.KSUID) (*dtos.AgendamentoResponseD
 	// Buscar informações adicionais para o DTO
 	pet, err := s.petRepository.GetByID(agendamento.PetID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do pet: %w", err)
+		return nil, errors.ErrFailedToFetchPetInfo
 	}
 
 	dono, err := s.donoRepository.GetByID(agendamento.DonoID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do dono: %w", err)
+		return nil, errors.ErrFailedToFetchDonoInfo
 	}
 
 	petshop, err := s.petshopRepository.GetByID(agendamento.PetshopID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do petshop: %w", err)
+		return nil, errors.ErrFailedToFetchPetshopInfo
 	}
 
 	// Converter para DTO de resposta
@@ -192,15 +188,15 @@ func (s *AgendamentoService) GetByDonoID(donoID ksuid.KSUID) ([]dtos.Agendamento
 	_, err := s.donoRepository.GetByID(donoID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("dono não encontrado")
+			return nil, errors.ErrDonoNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar dono: %w", err)
+		return nil, errors.ErrFailedToCheckDono
 	}
 
 	// Buscar agendamentos do dono
 	agendamentos, err := s.agendamentoRepository.GetByDonoID(donoID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos: %w", err)
+		return nil, errors.ErrFailedToFetchAgendamentos
 	}
 
 	// Converter para DTO de resposta
@@ -235,15 +231,15 @@ func (s *AgendamentoService) GetByPetshopID(petshopID ksuid.KSUID) ([]dtos.Agend
 	_, err := s.petshopRepository.GetByID(petshopID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("petshop não encontrado")
+			return nil, errors.ErrPetshopNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar petshop: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 
 	// Buscar agendamentos do petshop
 	agendamentos, err := s.agendamentoRepository.GetByPetshopID(petshopID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamentos: %w", err)
+		return nil, errors.ErrFailedToFetchAgendamentos
 	}
 
 	// Converter para DTO de resposta
@@ -280,7 +276,7 @@ func (s *AgendamentoService) UpdateStatus(id ksuid.KSUID, dto *dtos.AgendamentoU
 		if err == errors.ErrNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar agendamento: %w", err)
+		return nil, errors.ErrFailedToCheckAgendamento
 	}
 
 	// Validar a transição de status
@@ -289,38 +285,37 @@ func (s *AgendamentoService) UpdateStatus(id ksuid.KSUID, dto *dtos.AgendamentoU
 
 	// Validações específicas de acordo com regras de negócio
 	if statusAtual == entities.StatusCancelado && novoStatus != entities.StatusCancelado {
-		return nil, fmt.Errorf("não é possível alterar o status de um agendamento cancelado")
+		return nil, errors.ErrUpdateCanceledAgendamento
 	}
 
 	if statusAtual == entities.StatusConcluido && novoStatus != entities.StatusConcluido {
-		return nil, fmt.Errorf("não é possível alterar o status de um agendamento concluído")
+		return nil, errors.ErrUpdateCompletedAgendamento
 	}
 
 	// Atualizar status no banco de dados
 	if err := s.agendamentoRepository.UpdateStatus(id, novoStatus); err != nil {
-		return nil, fmt.Errorf("erro ao atualizar status: %w", err)
+		return nil, errors.ErrFailedToUpdateStatus
 	}
 
 	// Buscar agendamento atualizado
 	agendamentoAtualizado, err := s.agendamentoRepository.GetByID(id)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar agendamento atualizado: %w", err)
+		return nil, errors.ErrFailedToCheckAgendamento
 	}
-
 	// Buscar informações adicionais para o DTO
 	pet, err := s.petRepository.GetByID(agendamentoAtualizado.PetID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do pet: %w", err)
+		return nil, errors.ErrFailedToFetchPetInfo
 	}
 
 	dono, err := s.donoRepository.GetByID(agendamentoAtualizado.DonoID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do dono: %w", err)
+		return nil, errors.ErrFailedToFetchDonoInfo
 	}
 
 	petshop, err := s.petshopRepository.GetByID(agendamentoAtualizado.PetshopID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do petshop: %w", err)
+		return nil, errors.ErrFailedToFetchPetshopInfo
 	}
 
 	// Converter para DTO de resposta
@@ -335,26 +330,23 @@ func (s *AgendamentoService) Update(id ksuid.KSUID, dto *dtos.AgendamentoUpdateD
 		if err == errors.ErrNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar agendamento: %w", err)
+		return nil, errors.ErrFailedToCheckAgendamento
 	}
 
 	// Não permitir atualização de agendamentos cancelados ou concluídos
-	if agendamento.Status == entities.StatusCancelado {
-		return nil, fmt.Errorf("não é possível atualizar um agendamento cancelado")
-	}
-	if agendamento.Status == entities.StatusConcluido {
-		return nil, fmt.Errorf("não é possível atualizar um agendamento concluído")
+	if agendamento.Status == entities.StatusCancelado || agendamento.Status == entities.StatusConcluido {
+		return nil, errors.ErrAgendamentoUpdateForbidden
 	}
 
 	// Converter data de string para time.Time
 	dataAgendada, err := time.Parse("2006-01-02T15:04:05Z07:00", dto.DataAgendada)
 	if err != nil {
-		return nil, fmt.Errorf("formato de data inválido, use ISO 8601: %w", err)
+		return nil, errors.ErrInvalidDate
 	}
 
 	// Validar que a data não é passada
 	if dataAgendada.Before(time.Now()) {
-		return nil, fmt.Errorf("a data agendada não pode ser no passado")
+		return nil, errors.ErrPastDate
 	}
 
 	// Atualizar campos
@@ -365,28 +357,27 @@ func (s *AgendamentoService) Update(id ksuid.KSUID, dto *dtos.AgendamentoUpdateD
 	// Processar itens do agendamento
 	itens := []entities.ItemAgendamento{}
 	var totalCalculado float64
-
 	for _, itemDTO := range dto.Itens {
 		servicoID, err := ksuid.Parse(itemDTO.ServicoID)
 		if err != nil {
-			return nil, fmt.Errorf("ID de serviço inválido: %w", err)
+			return nil, errors.ErrInvalidID
 		}
 
 		// Verificar se o serviço existe e pertence ao petshop
 		servico, err := s.servicoRepository.GetByID(servicoID)
 		if err != nil {
 			if err == errors.ErrNotFound {
-				return nil, fmt.Errorf("serviço não encontrado")
+				return nil, errors.ErrServiceNotFound
 			}
-			return nil, fmt.Errorf("erro ao verificar serviço: %w", err)
+			return nil, errors.ErrFailedToCheckService
 		}
 
 		if servico.PetshopID != agendamento.PetshopID {
-			return nil, fmt.Errorf("o serviço não pertence ao petshop especificado")
+			return nil, errors.ErrServiceNotFromPetshop
 		}
 
 		if !servico.Ativo {
-			return nil, fmt.Errorf("o serviço '%s' não está ativo", servico.Nome)
+			return nil, errors.ErrServiceInactive
 		}
 
 		// Adicionar item ao agendamento
@@ -399,10 +390,9 @@ func (s *AgendamentoService) Update(id ksuid.KSUID, dto *dtos.AgendamentoUpdateD
 
 		totalCalculado += itemDTO.PrecoPrevisto
 	}
-
 	// Validar o total previsto
 	if totalCalculado != dto.TotalPrevisto {
-		return nil, fmt.Errorf("o total previsto (%f) não corresponde à soma dos preços dos itens (%f)", dto.TotalPrevisto, totalCalculado)
+		return nil, errors.ErrTotalPrevistoMismatch
 	}
 
 	// Atualizar itens
@@ -410,23 +400,23 @@ func (s *AgendamentoService) Update(id ksuid.KSUID, dto *dtos.AgendamentoUpdateD
 
 	// Salvar no repositório
 	if err := s.agendamentoRepository.Update(agendamento); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar agendamento: %w", err)
+		return nil, errors.ErrFailedToUpdateAgendamento
 	}
 
 	// Buscar informações adicionais para o DTO
 	pet, err := s.petRepository.GetByID(agendamento.PetID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do pet: %w", err)
+		return nil, errors.ErrFailedToFetchPetInfo
 	}
 
 	dono, err := s.donoRepository.GetByID(agendamento.DonoID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do dono: %w", err)
+		return nil, errors.ErrFailedToFetchDonoInfo
 	}
 
 	petshop, err := s.petshopRepository.GetByID(agendamento.PetshopID)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao buscar informações do petshop: %w", err)
+		return nil, errors.ErrFailedToFetchPetshopInfo
 	}
 
 	// Converter para DTO de resposta

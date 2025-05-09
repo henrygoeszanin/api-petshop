@@ -17,7 +17,7 @@ type Pet struct {
 	Especie    string      `json:"especie" gorm:"not null"`
 	Raca       string      `json:"raca" gorm:"not null"`
 	Nascimento string      `json:"nascimento" gorm:"not null"`
-	DonoID     ksuid.KSUID `json:"dono_id" gorm:"type:varchar(26);not null"`
+	DonoID     ksuid.KSUID `json:"dono_id" gorm:"type:varchar(27);not null"`
 }
 
 // Antes de criar um registro o ID é gerado automaticamente

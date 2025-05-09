@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
@@ -26,20 +25,19 @@ func NewServicoService(servicoRepo repositories.ServicoRepository, petshopRepo r
 }
 
 // Create cria um novo serviço para um petshop
-func (s *ServicoService) Create(petshopID ksuid.KSUID, dto *dtos.ServicoCreateDTO) (*dtos.ServicoResponseDTO, error) {
-	// Verificar se o petshop existe
+func (s *ServicoService) Create(petshopID ksuid.KSUID, dto *dtos.ServicoCreateDTO) (*dtos.ServicoResponseDTO, error) { // Verificar se o petshop existe
 	_, err := s.petshopRepository.GetByID(petshopID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, errors.ErrNotFound
+			return nil, errors.ErrPetshopNotFound
 		}
-		return nil, fmt.Errorf("falha ao verificar petshop: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 
 	// Verificar se já existe um serviço com o mesmo nome neste petshop
 	existingService, err := s.servicoRepository.GetByName(petshopID, dto.Nome)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao verificar serviço existente: %w", err)
+		return nil, errors.ErrFailedToCheckService
 	}
 	if existingService != nil {
 		return nil, errors.ErrAlreadyExists
@@ -53,10 +51,9 @@ func (s *ServicoService) Create(petshopID ksuid.KSUID, dto *dtos.ServicoCreateDT
 		PrecoBase: dto.PrecoBase,
 		Ativo:     true, // Por padrão, o serviço é criado como ativo
 	}
-
 	// Salvar no repositório
 	if err := s.servicoRepository.Create(servico); err != nil {
-		return nil, fmt.Errorf("falha ao criar serviço: %w", err)
+		return nil, errors.ErrFailedToCreateService
 	}
 
 	// Preparar DTO de resposta
@@ -79,12 +76,11 @@ func (s *ServicoService) Update(id ksuid.KSUID, dto *dtos.ServicoUpdateDTO) (*dt
 	if err != nil {
 		return nil, err
 	}
-
 	// Verificar se está tentando alterar para um nome que já existe em outro serviço do mesmo petshop
 	if servico.Nome != dto.Nome {
 		existingService, err := s.servicoRepository.GetByName(servico.PetshopID, dto.Nome)
 		if err != nil {
-			return nil, fmt.Errorf("falha ao verificar serviço existente: %w", err)
+			return nil, errors.ErrFailedToCheckService
 		}
 		if existingService != nil && existingService.ID != servico.ID {
 			return nil, errors.ErrAlreadyExists
@@ -95,10 +91,9 @@ func (s *ServicoService) Update(id ksuid.KSUID, dto *dtos.ServicoUpdateDTO) (*dt
 	servico.Nome = dto.Nome
 	servico.Descricao = dto.Descricao
 	servico.PrecoBase = dto.PrecoBase
-
 	// Salvar no repositório
 	if err := s.servicoRepository.Update(servico); err != nil {
-		return nil, fmt.Errorf("falha ao atualizar serviço: %w", err)
+		return nil, errors.ErrFailedToUpdateService
 	}
 
 	return s.entityToDTO(servico), nil
@@ -117,13 +112,13 @@ func (s *ServicoService) GetByPetshopID(petshopID ksuid.KSUID) ([]dtos.ServicoRe
 		if err == errors.ErrNotFound {
 			return nil, errors.ErrNotFound
 		}
-		return nil, fmt.Errorf("falha ao verificar petshop: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 
 	// Buscar serviços
 	servicos, err := s.servicoRepository.GetByPetshopID(petshopID)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar serviços do petshop: %w", err)
+		return nil, errors.ErrFailedToFetchServices
 	}
 
 	// Converter para DTOs

@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
@@ -35,45 +34,43 @@ func NewProcedimentoService(
 }
 
 // Create cria um novo registro de procedimento
-func (s *ProcedimentoService) Create(dto *dtos.ProcedimentoCreateDTO) (*dtos.ProcedimentoResponseDTO, error) {
-	// Converter IDs de string para ksuid.KSUID
+func (s *ProcedimentoService) Create(dto *dtos.ProcedimentoCreateDTO) (*dtos.ProcedimentoResponseDTO, error) { // Converter IDs de string para ksuid.KSUID
 	petID, err := ksuid.Parse(dto.PetID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do pet inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
 
 	petshopID, err := ksuid.Parse(dto.PetshopID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do petshop inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
 
 	// Verificar se o pet existe
 	pet, err := s.petRepository.GetByID(petID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("pet não encontrado")
+			return nil, errors.ErrPetNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar pet: %w", err)
+		return nil, errors.ErrFailedToCheckPet
 	}
-
 	// Verificar se o petshop existe
 	petshop, err := s.petshopRepository.GetByID(petshopID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("petshop não encontrado")
+			return nil, errors.ErrPetshopNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar petshop: %w", err)
+		return nil, errors.ErrFailedToCheckPetshop
 	}
 
 	// Converter data de string para time.Time
 	dataRealizacao, err := time.Parse("2006-01-02T15:04:05Z07:00", dto.DataRealizacao)
 	if err != nil {
-		return nil, fmt.Errorf("formato de data inválido, use ISO 8601: %w", err)
+		return nil, errors.ErrInvalidDate
 	}
 
 	// Validar que a data não é futura
 	if dataRealizacao.After(time.Now()) {
-		return nil, fmt.Errorf("a data de realização não pode ser futura")
+		return nil, errors.ErrFutureDate
 	}
 
 	// Criar entidade Procedimento
@@ -92,20 +89,20 @@ func (s *ProcedimentoService) Create(dto *dtos.ProcedimentoCreateDTO) (*dtos.Pro
 	for _, itemDTO := range dto.Itens {
 		servicoID, err := ksuid.Parse(itemDTO.ServicoID)
 		if err != nil {
-			return nil, fmt.Errorf("ID de serviço inválido: %w", err)
+			return nil, errors.ErrInvalidID
 		}
 
 		// Verificar se o serviço existe e pertence ao petshop
 		servico, err := s.servicoRepository.GetByID(servicoID)
 		if err != nil {
 			if err == errors.ErrNotFound {
-				return nil, fmt.Errorf("serviço não encontrado: %s", itemDTO.ServicoID)
+				return nil, errors.ErrServiceNotFound
 			}
-			return nil, fmt.Errorf("erro ao verificar serviço: %w", err)
+			return nil, errors.ErrFailedToCheckService
 		}
 
 		if servico.PetshopID != petshopID {
-			return nil, fmt.Errorf("o serviço %s não pertence ao petshop %s", itemDTO.ServicoID, dto.PetshopID)
+			return nil, errors.ErrServiceNotFromPetshop
 		}
 
 		// Adicionar item ao procedimento
@@ -117,17 +114,16 @@ func (s *ProcedimentoService) Create(dto *dtos.ProcedimentoCreateDTO) (*dtos.Pro
 		procedimento.Itens = append(procedimento.Itens, item)
 		totalCalculado += itemDTO.PrecoFinal
 	}
-
 	// Verificar se o total informado bate com a soma dos preços finais
 	// Pequena margem de erro para lidar com arredondamentos
 	const epsilon = 0.01
 	if dto.Total < totalCalculado-epsilon || dto.Total > totalCalculado+epsilon {
-		return nil, fmt.Errorf("o total informado (%.2f) não corresponde à soma dos preços finais (%.2f)", dto.Total, totalCalculado)
+		return nil, errors.ErrTotalMismatch
 	}
 
 	// Salvar no repositório
 	if err := s.procedimentoRepository.Create(procedimento); err != nil {
-		return nil, fmt.Errorf("falha ao criar procedimento: %w", err)
+		return nil, errors.ErrFailedToCreateService
 	}
 
 	// Preparar DTO de resposta
@@ -135,20 +131,19 @@ func (s *ProcedimentoService) Create(dto *dtos.ProcedimentoCreateDTO) (*dtos.Pro
 }
 
 // GetByPetID lista todos os procedimentos de um determinado pet
-func (s *ProcedimentoService) GetByPetID(petID ksuid.KSUID) ([]dtos.ProcedimentoResponseDTO, error) {
-	// Verificar se o pet existe
+func (s *ProcedimentoService) GetByPetID(petID ksuid.KSUID) ([]dtos.ProcedimentoResponseDTO, error) { // Verificar se o pet existe
 	pet, err := s.petRepository.GetByID(petID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("pet não encontrado")
+			return nil, errors.ErrPetNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar pet: %w", err)
+		return nil, errors.ErrFailedToCheckPet
 	}
 
 	// Buscar procedimentos
 	procedimentos, err := s.procedimentoRepository.GetByPetID(petID)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar procedimentos do pet: %w", err)
+		return nil, errors.ErrFailedToCheckProcedure
 	}
 
 	// Converter para DTOs

@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
@@ -26,24 +25,23 @@ func NewPetService(petRepo repositories.PetRepository, donoRepo repositories.Don
 }
 
 // Create cria um novo pet
-func (s *PetService) Create(dto *dtos.PetCreateDTO) (*dtos.PetResponseDTO, error) {
-	// Converter DonoID string para ksuid.KSUID
+func (s *PetService) Create(dto *dtos.PetCreateDTO) (*dtos.PetResponseDTO, error) { // Converter DonoID string para ksuid.KSUID
 	donoID, err := ksuid.Parse(dto.DonoID)
 	if err != nil {
-		return nil, fmt.Errorf("ID do dono inválido: %w", err)
+		return nil, errors.ErrInvalidID
 	}
 
 	// Verificar se o dono existe
 	dono, err := s.donoRepository.GetByID(donoID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("dono não encontrado com o ID fornecido")
+			return nil, errors.ErrDonoNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar dono: %w", err)
+		return nil, errors.ErrFailedToCheckDono
 	}
 
 	if dono == nil {
-		return nil, errors.ErrNotFound
+		return nil, errors.ErrDonoNotFound
 	}
 
 	// Criar entidade Pet
@@ -54,10 +52,9 @@ func (s *PetService) Create(dto *dtos.PetCreateDTO) (*dtos.PetResponseDTO, error
 		Nascimento: dto.Nascimento,
 		DonoID:     donoID,
 	}
-
 	// Salvar no repositório
 	if err := s.petRepository.Create(pet); err != nil {
-		return nil, fmt.Errorf("falha ao criar pet: %w", err)
+		return nil, errors.ErrFailedToCreatePet
 	}
 
 	// Preparar DTO de resposta
@@ -74,20 +71,19 @@ func (s *PetService) GetByID(id ksuid.KSUID) (*dtos.PetResponseDTO, error) {
 }
 
 // GetByDonoID lista todos os pets de um determinado dono
-func (s *PetService) GetByDonoID(donoID ksuid.KSUID) ([]dtos.PetResponseDTO, error) {
-	// Verificar se o dono existe
+func (s *PetService) GetByDonoID(donoID ksuid.KSUID) ([]dtos.PetResponseDTO, error) { // Verificar se o dono existe
 	_, err := s.donoRepository.GetByID(donoID)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return nil, fmt.Errorf("dono não encontrado com o ID fornecido")
+			return nil, errors.ErrDonoNotFound
 		}
-		return nil, fmt.Errorf("erro ao verificar dono: %w", err)
+		return nil, errors.ErrFailedToCheckDono
 	}
 
 	// Buscar pets do dono
 	pets, err := s.petRepository.GetByDonoID(donoID)
 	if err != nil {
-		return nil, fmt.Errorf("falha ao buscar pets do dono: %w", err)
+		return nil, errors.ErrFailedToCheckPet
 	}
 
 	// Converter para DTOs
