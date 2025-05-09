@@ -23,12 +23,6 @@ func ServicoOwnershipRequired() gin.HandlerFunc {
 		// Extrai as claims do token JWT
 		claims := jwt.ExtractClaims(c)
 
-		// Verifica se é admin (eles podem acessar qualquer recurso)
-		if isAdmin, exists := claims["is_admin"]; exists && isAdmin == true {
-			c.Next()
-			return
-		}
-
 		// Verifica o tipo de usuário
 		tipo, tipoExists := claims["tipo"]
 		if !tipoExists || tipo != "petshop" {
@@ -95,12 +89,6 @@ func PetshopOwnershipFromParamRequired(paramName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Extrai as claims do token JWT
 		claims := jwt.ExtractClaims(c)
-
-		// Verifica se é admin (eles podem acessar qualquer recurso)
-		if isAdmin, exists := claims["is_admin"]; exists && isAdmin == true {
-			c.Next()
-			return
-		}
 
 		// Verifica o tipo de usuário
 		tipo, tipoExists := claims["tipo"]

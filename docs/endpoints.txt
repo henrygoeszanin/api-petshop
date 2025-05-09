@@ -1,13 +1,3 @@
-4. Serviços
-Método	Rota	Descrição
-POST	/petshops/:petshopId/servicos	Adicionar um serviço a um petshop. Recebe nome, descrição e preço base. Valida petshopId.
-GET	/petshops/:petshopId/servicos	Listar todos os serviços disponíveis naquele petshop.
-5. Procedimentos (Histórico de atendimentos)
-
-Método	Rota	Descrição
-POST	/procedimentos	Registrar um procedimento realizado. Recebe pet_id, petshop_id, data, lista de {servico_id, preco_final}, observações e total. Valida existência e pertencimento.
-GET	/pets/:petId/procedimentos	Listar histórico de procedimentos de um pet específico (com snapshot de nome do serviço e petshop).
-
 6. Agendamentos
 Método	Rota	Descrição
 POST	/agendamentos	Criar agendamento. Recebe dono_id, pet_id, petshop_id, data_agendada, lista de {servico_id, preco_previsto}, observações. Valida regras (não passadas, serviços válidos).
