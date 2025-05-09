@@ -40,6 +40,7 @@ func main() {
 	authService := services.NewAuthService(donoRepo, petshopRepo)
 	donoService := services.NewDonoService(donoRepo)
 	petService := services.NewPetService(petRepo, donoRepo)
+	petshopService := services.NewPetshopService(petshopRepo)
 
 	// Configura o middleware JWT
 	authMiddleware, err := middlewares.SetupJWTMiddleware(authService, cfg)
@@ -51,6 +52,8 @@ func main() {
 	authHandler := handlers.NewAuthHandler(authService, authMiddleware)
 	donoHandler := handlers.NewDonoHandler(donoService)
 	petHandler := handlers.NewPetHandler(petService)
+	profileHandler := handlers.NewProfileHandler(donoService, petshopService)
+
 	// Configura o router Gin
 	router := gin.Default()
 
@@ -58,6 +61,7 @@ func main() {
 	routes.SetupAuthRoutes(router, authHandler, authMiddleware)
 	routes.SetupDonoRoutes(router, donoHandler, authMiddleware)
 	routes.SetupPetRoutes(router, petHandler, authMiddleware)
+	routes.SetupProfileRoutes(router, profileHandler, authMiddleware)
 
 	// Inicia o servidor
 	serverAddr := fmt.Sprintf(":%s", cfg.ServerPort)

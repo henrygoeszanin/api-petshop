@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/henrygoeszanin/api_petshop/domain/entities"
 	"github.com/henrygoeszanin/api_petshop/domain/errors"
@@ -98,4 +99,30 @@ func (r *PetshopRepositoryImpl) GetByEmail(email string) (*entities.Petshop, err
 	}
 
 	return &petshop, nil
+}
+
+// FindByCity busca petshops por cidade (case-insensitive)
+func (r *PetshopRepositoryImpl) FindByCity(city string, page, limit int) ([]entities.Petshop, error) {
+	var petshops []entities.Petshop
+
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 || limit > 100 {
+		limit = 10
+	}
+
+	offset := (page - 1) * limit
+
+	// Usando LOWER para busca case-insensitive
+	result := r.db.Where("LOWER(cidade) LIKE ?", "%"+strings.ToLower(city)+"%").
+		Offset(offset).
+		Limit(limit).
+		Find(&petshops)
+
+	if result.Error != nil {
+		return nil, fmt.Errorf("erro ao buscar petshops por cidade: %w", result.Error)
+	}
+
+	return petshops, nil
 }

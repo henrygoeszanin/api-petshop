@@ -13,6 +13,7 @@ type PetshopRepository interface {
 	Update(petshop *entities.Petshop) error
 	Delete(id ksuid.KSUID) error
 	List(page, limit int) ([]entities.Petshop, error)
+	FindByCity(city string, page int, limit int) ([]entities.Petshop, error)
 
 	// Métodos específicos para autenticação
 	GetByEmail(email string) (*entities.Petshop, error)

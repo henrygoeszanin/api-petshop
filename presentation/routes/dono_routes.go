@@ -19,10 +19,6 @@ func SetupDonoRoutes(router *gin.Engine, donoHandler *handlers.DonoHandler, auth
 		protected := donos.Group("/")
 		protected.Use(authMiddleware.MiddlewareFunc())
 		{
-			// Rota para buscar dados do dono por ID (GET /donos/:id)
-			// Verifica se o usuário é dono do recurso ou admin
-			protected.GET(":id", middlewares.DonoOwnershipRequired(), donoHandler.GetByID)
-
 			// Rota para atualizar dados do dono (PUT /donos/:id)
 			// Verifica se o usuário é dono do recurso ou admin
 			protected.PUT(":id", middlewares.DonoOwnershipRequired(), donoHandler.Update)
