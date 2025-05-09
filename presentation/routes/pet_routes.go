@@ -13,13 +13,14 @@ func SetupPetRoutes(router *gin.Engine, petHandler *handlers.PetHandler, authMid
 	pets := router.Group("/pets")
 	{
 		// Rotas protegidas (requerem autenticação)
-		pets.Use(authMiddleware.MiddlewareFunc())
+		protected := pets.Group("/")
+		protected.Use(authMiddleware.MiddlewareFunc())
 		{
 			// POST /pets - Criar um novo pet
-			pets.POST("", petHandler.Create)
+			protected.POST("", petHandler.Create)
 
 			// GET /pets/:id - Retornar dados do pet por ID
-			pets.GET(":id", petHandler.GetByID)
+			protected.GET(":id", petHandler.GetByID)
 		}
 	}
 

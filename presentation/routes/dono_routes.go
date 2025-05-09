@@ -8,12 +8,14 @@ import (
 )
 
 // SetupDonoRoutes configura as rotas para operações relacionadas a donos
-func SetupDonoRoutes(router *gin.Engine, donoHandler *handlers.DonoHandler, authMiddleware *jwt.GinJWTMiddleware) {
-	// Grupo de rotas para donos
+func SetupDonoRoutes(router *gin.Engine, donoHandler *handlers.DonoHandler, authMiddleware *jwt.GinJWTMiddleware) { // Grupo de rotas para donos
 	donos := router.Group("/donos")
 	{
-		// Rota pública para criar um novo dono (POST /donos)
-		donos.POST("", donoHandler.Create)
+		// Rotas públicas (não requerem autenticação)
+		{
+			// Rota pública para criar um novo dono (POST /donos)
+			donos.POST("", donoHandler.Create)
+		}
 
 		// Rotas protegidas (requerem autenticação)
 		protected := donos.Group("/")

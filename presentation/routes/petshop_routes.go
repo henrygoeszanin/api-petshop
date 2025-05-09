@@ -8,18 +8,20 @@ import (
 )
 
 // SetupPetshopRoutes configura as rotas para operações relacionadas a petshops
-func SetupPetshopRoutes(router *gin.Engine, petshopHandler *handlers.PetshopHandler, authMiddleware *jwt.GinJWTMiddleware) {
-	// Grupo de rotas para petshops
+func SetupPetshopRoutes(router *gin.Engine, petshopHandler *handlers.PetshopHandler, authMiddleware *jwt.GinJWTMiddleware) { // Grupo de rotas para petshops
 	petshops := router.Group("/petshops")
 	{
-		// Rota pública para criar um novo petshop
-		petshops.POST("", petshopHandler.Create)
+		// Rotas públicas (não requerem autenticação)
+		{
+			// Rota pública para criar um novo petshop
+			petshops.POST("", petshopHandler.Create)
 
-		// Rota pública para buscar petshops por cidade
-		petshops.GET("", petshopHandler.FindByCity)
+			// Rota pública para buscar petshops por cidade
+			petshops.GET("", petshopHandler.FindByCity)
 
-		// Rota pública para buscar petshop específico por ID
-		petshops.GET("/:id", petshopHandler.GetByID)
+			// Rota pública para buscar petshop específico por ID
+			petshops.GET("/:id", petshopHandler.GetByID)
+		}
 
 		// Rotas protegidas (requerem autenticação)
 		protected := petshops.Group("/")

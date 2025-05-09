@@ -13,14 +13,14 @@ func SetupAgendamentoRoutes(router *gin.Engine, agendamentoHandler *handlers.Age
 	agendamentos := router.Group("/agendamentos")
 	{
 		// Todas as rotas de agendamentos requerem autenticação
-		agendamentos.Use(authMiddleware.MiddlewareFunc())
-		{
-			// POST /agendamentos - Criar um novo agendamento
-			agendamentos.POST("", agendamentoHandler.Create)
+		protected := agendamentos.Group("/")
+		protected.Use(authMiddleware.MiddlewareFunc())
+		{ // POST /agendamentos - Criar um novo agendamento
+			protected.POST("", agendamentoHandler.Create)
 
 			// GET /agendamentos/:id - Buscar agendamento por ID
 			// Requer verificação de propriedade (dono ou petshop associado)
-			agendamentos.GET("/:id", middlewares.AgendamentoOwnershipRequired(), agendamentoHandler.GetByID)
+			protected.GET("/:id", middlewares.AgendamentoOwnershipRequired(), agendamentoHandler.GetByID)
 
 			// PUT /agendamentos/:id - Atualizar agendamento
 			// Requer verificação de propriedade (dono ou petshop associado)
