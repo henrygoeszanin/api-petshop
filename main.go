@@ -26,6 +26,13 @@ func main() {
 	// Carrega as configurações
 	cfg := config.LoadConfig()
 
+	// Configura o router Gin
+	router := gin.Default()
+
+	// Adiciona o middleware TokenExtractor globalmente
+	// extrai o token JWT do cabeçalho Authorization, cookie ou query string
+	router.Use(middlewares.TokenExtractor())
+
 	// Configura o banco de dados
 	db, err := database.SetupDatabase(cfg)
 	if err != nil {
@@ -36,6 +43,7 @@ func main() {
 	petshopRepo := repositories.NewPetshopRepository(db)
 	petRepo := repositories.NewPetRepository(db)
 	servicoRepo := repositories.NewServicoRepository(db)
+	agendamentoRepo := repositories.NewAgendamentoRepository(db)
 
 	// Inicializa os serviços
 	authService := services.NewAuthService(donoRepo, petshopRepo)
@@ -43,22 +51,25 @@ func main() {
 	petService := services.NewPetService(petRepo, donoRepo)
 	petshopService := services.NewPetshopService(petshopRepo)
 	servicoService := services.NewServicoService(servicoRepo, petshopRepo)
+	agendamentoService := services.NewAgendamentoService(agendamentoRepo, donoRepo, petRepo, petshopRepo, servicoRepo)
 
-	// Configura o middleware JWT
+	// Configura os middlewares
 	authMiddleware, err := middlewares.SetupJWTMiddleware(authService, cfg)
 	if err != nil {
 		fmt.Printf("Erro ao configurar middleware JWT: %v\n", err)
 		os.Exit(1)
 	}
+	middlewares.SetServicoService(servicoService)
+	middlewares.SetPetService(petService)
+	middlewares.SetAgendamentoService(agendamentoService)
+
 	// Inicializa os handlers
 	authHandler := handlers.NewAuthHandler(authService, authMiddleware)
 	donoHandler := handlers.NewDonoHandler(donoService)
 	petHandler := handlers.NewPetHandler(petService)
 	profileHandler := handlers.NewProfileHandler(donoService, petshopService)
 	servicoHandler := handlers.NewServicoHandler(servicoService)
-
-	// Configura o router Gin
-	router := gin.Default()
+	agendamentoHandler := handlers.NewAgendamentoHandler(agendamentoService)
 
 	// Configura as rotas
 	routes.SetupAuthRoutes(router, authHandler, authMiddleware)
@@ -66,6 +77,7 @@ func main() {
 	routes.SetupPetRoutes(router, petHandler, authMiddleware)
 	routes.SetupProfileRoutes(router, profileHandler, authMiddleware)
 	routes.SetupServicoRoutes(router, servicoHandler, authMiddleware)
+	routes.SetupAgendamentoRoutes(router, agendamentoHandler, authMiddleware)
 
 	// Inicia o servidor
 	serverAddr := fmt.Sprintf(":%s", cfg.ServerPort)

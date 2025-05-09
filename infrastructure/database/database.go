@@ -26,13 +26,16 @@ func SetupDatabase(config *config.Config) (*gorm.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("falha ao conectar ao PostgreSQL: %w", err)
 	}
-
 	// Auto Migrate - cria tabelas baseadas nas entidades
 	err = db.AutoMigrate(
 		&entities.Dono{},
 		&entities.Pet{},
 		&entities.Petshop{},
 		&entities.Servico{},
+		&entities.Procedimento{},
+		&entities.ItemProcedimento{},
+		&entities.Agendamento{},
+		&entities.ItemAgendamento{},
 	)
 	if err != nil {
 		return nil, fmt.Errorf("falha na migração do banco: %w", err)
