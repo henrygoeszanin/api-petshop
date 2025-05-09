@@ -47,9 +47,9 @@ func main() {
 
 	// Inicializa os serviços
 	authService := services.NewAuthService(donoRepo, petshopRepo)
+	petshopService := services.NewPetshopService(petshopRepo)
 	donoService := services.NewDonoService(donoRepo)
 	petService := services.NewPetService(petRepo, donoRepo)
-	petshopService := services.NewPetshopService(petshopRepo)
 	servicoService := services.NewServicoService(servicoRepo, petshopRepo)
 	agendamentoService := services.NewAgendamentoService(agendamentoRepo, donoRepo, petRepo, petshopRepo, servicoRepo)
 
@@ -67,6 +67,7 @@ func main() {
 	authHandler := handlers.NewAuthHandler(authService, authMiddleware)
 	donoHandler := handlers.NewDonoHandler(donoService)
 	petHandler := handlers.NewPetHandler(petService)
+	petSHopHandler := handlers.NewPetshopHandler(petshopService)
 	profileHandler := handlers.NewProfileHandler(donoService, petshopService)
 	servicoHandler := handlers.NewServicoHandler(servicoService)
 	agendamentoHandler := handlers.NewAgendamentoHandler(agendamentoService)
@@ -75,6 +76,7 @@ func main() {
 	routes.SetupAuthRoutes(router, authHandler, authMiddleware)
 	routes.SetupDonoRoutes(router, donoHandler, authMiddleware)
 	routes.SetupPetRoutes(router, petHandler, authMiddleware)
+	routes.SetupPetshopRoutes(router, petSHopHandler, authMiddleware)
 	routes.SetupProfileRoutes(router, profileHandler, authMiddleware)
 	routes.SetupServicoRoutes(router, servicoHandler, authMiddleware)
 	routes.SetupAgendamentoRoutes(router, agendamentoHandler, authMiddleware)

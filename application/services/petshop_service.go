@@ -156,6 +156,11 @@ func (s *PetshopService) FindByCity(city string, page, limit int) ([]dtos.Petsho
 		})
 	}
 
+	// verifica se a lista está vazia
+	if len(petshopDTOs) == 0 {
+		return nil, errors.ErrNotFound
+	}
+
 	return petshopDTOs, nil
 }
 

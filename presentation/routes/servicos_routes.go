@@ -10,7 +10,7 @@ import (
 // SetupServicoRoutes configura as rotas para operações relacionadas a serviços
 func SetupServicoRoutes(router *gin.Engine, servicoHandler *handlers.ServicoHandler, authMiddleware *jwt.GinJWTMiddleware) {
 	// Rota para listar serviços de um petshop (pública)
-	router.GET("/petshops/:petshopId/servicos", servicoHandler.GetByPetshopID)
+	router.GET("/petshops/:id/servicos", servicoHandler.GetByPetshopID)
 
 	// Rotas protegidas (requerem autenticação)
 	protected := router.Group("/petshops/:petshopId/servicos")

@@ -9,7 +9,7 @@ import (
 )
 
 type Petshop struct {
-	ID        ksuid.KSUID `gorm:"type:varchar(26);primaryKey" json:"id"`
+	ID        ksuid.KSUID `gorm:"type:varchar(27);primaryKey" json:"id"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -37,6 +37,9 @@ func (d *Petshop) BeforeCreate(tx *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+
+	print("ID gerado: ", id.String())
+
 	d.ID = id
 	return nil
 }

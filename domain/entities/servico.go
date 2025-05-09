@@ -8,7 +8,7 @@ import (
 )
 
 type Servico struct {
-	ID        ksuid.KSUID `gorm:"type:varchar(26);primaryKey" json:"id"`
+	ID        ksuid.KSUID `gorm:"type:varchar(27);primaryKey" json:"id"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -17,7 +17,7 @@ type Servico struct {
 	Descricao string      `json:"descricao"`
 	Preco     float32     `json:"preco" gorm:"not null"`
 	Duracao   string      `json:"duracao"`
-	PetshopID ksuid.KSUID `json:"petshop_id" gorm:"type:varchar(26);not null"`
+	PetshopID ksuid.KSUID `json:"petshop_id" gorm:"type:varchar(27);not null"`
 	PrecoBase float64     `json:"preco_base" gorm:"not null"`
 	Ativo     bool        `json:"ativo" gorm:"default:true"`
 }

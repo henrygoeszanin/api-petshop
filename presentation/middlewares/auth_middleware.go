@@ -46,7 +46,6 @@ func TokenExtractor() gin.HandlerFunc {
 		// para que possa ser processado pelos middlewares de autenticação JWT
 		if token != "" {
 			c.Request.Header.Set("Authorization", "Bearer "+token)
-			fmt.Printf("TokenExtractor: Token encontrado\n")
 		} else {
 			fmt.Printf("TokenExtractor: Nenhum token encontrado\n")
 		}

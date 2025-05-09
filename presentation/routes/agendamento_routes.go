@@ -54,7 +54,7 @@ func SetupAgendamentoRoutes(router *gin.Engine, agendamentoHandler *handlers.Age
 		{
 			// GET /petshops/:petshopId/agendamentos - Listar todos os agendamentos de um petshop
 			// Middleware verifica se o usuário autenticado é o próprio petshop
-			protected.GET("/:petshopId/agendamentos", middlewares.PetshopOwnershipRequired(), agendamentoHandler.GetByPetshopID)
+			protected.GET("/:id/agendamentos", middlewares.PetshopOwnershipRequired(), agendamentoHandler.GetByPetshopID)
 		}
 	}
 }
