@@ -8,6 +8,8 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/henrygoeszanin/api_petshop/domain/errors"
+
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
 	"github.com/henrygoeszanin/api_petshop/application/services"
 	"github.com/henrygoeszanin/api_petshop/config"
@@ -47,7 +49,8 @@ func TokenExtractor() gin.HandlerFunc {
 		if token != "" {
 			c.Request.Header.Set("Authorization", "Bearer "+token)
 		} else {
-			fmt.Printf("TokenExtractor: Nenhum token encontrado\n")
+			c.AbortWithError(http.StatusUnauthorized, errors.ErrUnauthorized)
+			return
 		}
 
 		// Continua a execução da cadeia de middlewares
