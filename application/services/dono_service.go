@@ -26,7 +26,7 @@ func NewDonoService(donoRepo repositories.DonoRepository) *DonoService {
 func (s *DonoService) Create(dto *dtos.DonoCreateDTO) (*dtos.DonoDetailDTO, error) {
 	// Verificar duplicidade por email
 	existing, err := s.donoRepository.GetByEmail(dto.Email)
-	if err != nil {
+	if err != errors.ErrNotFound {
 		return nil, errors.ErrCheckExistingOwner
 	}
 	if existing != nil {

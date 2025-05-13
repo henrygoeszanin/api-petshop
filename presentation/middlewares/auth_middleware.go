@@ -8,7 +8,6 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/henrygoeszanin/api_petshop/domain/errors"
 
 	"github.com/henrygoeszanin/api_petshop/application/dtos"
 	"github.com/henrygoeszanin/api_petshop/application/services"
@@ -43,14 +42,10 @@ func TokenExtractor() gin.HandlerFunc {
 		if token == "" {
 			token = c.Query("token")
 		}
-
 		// Se um token foi encontrado em qualquer fonte, adicionamos ao header de Autorização
 		// para que possa ser processado pelos middlewares de autenticação JWT
 		if token != "" {
 			c.Request.Header.Set("Authorization", "Bearer "+token)
-		} else {
-			c.AbortWithError(http.StatusUnauthorized, errors.ErrUnauthorized)
-			return
 		}
 
 		// Continua a execução da cadeia de middlewares
